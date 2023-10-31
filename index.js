@@ -59,12 +59,27 @@ async function run() {
 
         // bookings data
 
+        app.get('/bookings', async (req, res) => {
+            console.log(req.query.email);
+            // console.log('token owner info', req.user)
+            // if(req.user.email !== req.query.email){
+            //     return res.status(403).send({message: 'forbidden access'})
+            // }
+            let query = {};
+            if (req.query?.email) {
+                query = { email: req.query.email }
+            }
+            const result = await bookingCollection.find(query).toArray();
+            res.send(result);
+        });
+
         app.post('/bookings', async(req, res)=>{
             const bookings = req.body;
             console.log(bookings);
             const result= await bookingCollection.insertOne(bookings);
             res.send(result);
-        })
+        });
+
 
 
 
